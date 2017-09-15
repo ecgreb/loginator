@@ -1,6 +1,8 @@
 # Loginator
 Clean architecture case study based on the Android Studio login template
 
+<img src="files/cover-image.jpg" width="641">
+
 ## Prerequisites
 * Android Studio 3.0
 * API 26
