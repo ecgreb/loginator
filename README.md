@@ -9,7 +9,7 @@ Clean architecture case study based on the Android Studio login template
 * Kotlin
 
 ## Overview
-Demo built using a modified version of Model-View-Presenter (MVP) with Architecture Components (coming soon).
+Demo app built using a modified version of Model-View-Presenter (MVP) with Architecture Components (coming soon).
 
 ## Screenshot
 <img src="files/screenshot.png" width="240">
