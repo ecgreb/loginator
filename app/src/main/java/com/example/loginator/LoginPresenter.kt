@@ -6,6 +6,9 @@ class LoginPresenter(private val controller: LoginController) : LoginCallback {
 
     init {
         Loginator.callback = this
+        if (ViewStateManager.isProgressVisible) {
+            controller.showProgress(true)
+        }
     }
 
     fun onLoginButtonClick(email: String, password: String) {
@@ -28,6 +31,7 @@ class LoginPresenter(private val controller: LoginController) : LoginCallback {
         }
 
         controller.showProgress(true)
+        ViewStateManager.isProgressVisible = true
         Loginator.login(email, password)
     }
 
@@ -41,6 +45,7 @@ class LoginPresenter(private val controller: LoginController) : LoginCallback {
 
     override fun onLoginComplete(success: Boolean) {
         controller.showProgress(false)
+        ViewStateManager.isProgressVisible = false
         if (success) {
             controller.shutdown()
         } else {

@@ -8,7 +8,7 @@ class LoginThread(private val email: String, private val password: String,
 
         try {
             // Simulate network access.
-            Thread.sleep(2000)
+            Thread.sleep(3000)
         } catch (e: InterruptedException) {
             callback.onLoginComplete(false)
         }
