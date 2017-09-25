@@ -18,24 +18,23 @@ import kotlinx.android.synthetic.main.login_form.password
 /**
  * A login screen that offers login via email/password.
  */
-class LoginActivity : AppCompatActivity(), LoginController, LoginCallback {
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private var loginThread: LoginThread? = null
-
+class LoginActivity : AppCompatActivity(), LoginController {
     private lateinit var presenter: LoginPresenter
 
     override var emailError: Int? = null
         set(value) {
-            email.error = if (value == null) null else getString(value)
-            email.requestFocus()
+            runOnUiThread({
+                email.error = if (value == null) null else getString(value)
+                email.requestFocus()
+            })
         }
 
     override var passwordError: Int? = null
         set(value) {
-            password.error = if (value == null) null else getString(value)
-            password.requestFocus()
+            runOnUiThread({
+                password.error = if (value == null) null else getString(value)
+                password.requestFocus()
+            })
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,31 +66,16 @@ class LoginActivity : AppCompatActivity(), LoginController, LoginCallback {
     }
 
     /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    override fun attemptLogin() {
-        if (loginThread != null) {
-            return
-        }
-
-        // Store values at the time of the login attempt.
-        val emailStr = email.text.toString()
-        val passwordStr = password.text.toString()
-
-        // Show a progress spinner, and kick off a background task to
-        // perform the user login attempt.
-        showProgress(true)
-        loginThread = LoginThread(emailStr, passwordStr, this)
-        loginThread?.start()
-    }
-
-    /**
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private fun showProgress(show: Boolean) {
+    override fun showProgress(show: Boolean) {
+        runOnUiThread({
+            showProgressInternal(show)
+        })
+    }
+
+    private fun showProgressInternal(show: Boolean) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
@@ -125,17 +109,7 @@ class LoginActivity : AppCompatActivity(), LoginController, LoginCallback {
         }
     }
 
-    override fun onLoginComplete(success: Boolean) {
-        runOnUiThread({
-            loginThread = null
-            showProgress(false)
-
-            if (success) {
-                finish()
-            } else {
-                password.error = getString(R.string.error_incorrect_password)
-                password.requestFocus()
-            }
-        })
+    override fun shutdown() {
+        finish()
     }
 }

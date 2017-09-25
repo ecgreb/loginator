@@ -4,5 +4,6 @@ interface LoginController {
     var emailError: Int?
     var passwordError: Int?
 
-    fun attemptLogin()
+    fun showProgress(show: Boolean)
+    fun shutdown()
 }
