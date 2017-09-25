@@ -32,17 +32,22 @@ class LoginActivity : AppCompatActivity(), LoginController {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         presenter = LoginPresenter(this)
+        initSoftKeyboard()
+        initLoginForm()
+    }
 
-        // Set up the login form.
+    private fun initSoftKeyboard() {
         password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                attemptLogin()
+                presenter.onLoginButtonClick()
                 return@OnEditorActionListener true
             }
             false
         })
+    }
 
-        email_sign_in_button.setOnClickListener { attemptLogin() }
+    private fun initLoginForm() {
+        email_sign_in_button.setOnClickListener { presenter.onLoginButtonClick() }
     }
 
     /**
@@ -50,7 +55,7 @@ class LoginActivity : AppCompatActivity(), LoginController {
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private fun attemptLogin() {
+    override fun attemptLogin() {
         if (mAuthTask != null) {
             return
         }
