@@ -1,14 +1,17 @@
 package com.example.loginator
 
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.Observer
 import android.text.TextUtils
 
-class LoginPresenter(private val controller: LoginController) : LoginCallback {
+class LoginPresenter(private val controller: LoginController,
+        private val viewModel: LoginViewModel) : LoginCallback, LifecycleObserver {
 
     init {
         Loginator.callback = this
-        if (ViewStateManager.isProgressVisible) {
-            controller.showProgress(true)
-        }
+        viewModel.isProgressVisible.observe(controller, Observer<Boolean> {
+            isProgressVisible -> controller.showProgress(isProgressVisible ?: false)
+        })
     }
 
     fun onLoginButtonClick(email: String, password: String) {
@@ -31,7 +34,7 @@ class LoginPresenter(private val controller: LoginController) : LoginCallback {
         }
 
         controller.showProgress(true)
-        ViewStateManager.isProgressVisible = true
+        viewModel.isProgressVisible.value = true
         Loginator.login(email, password)
     }
 
@@ -45,7 +48,7 @@ class LoginPresenter(private val controller: LoginController) : LoginCallback {
 
     override fun onLoginComplete(success: Boolean) {
         controller.showProgress(false)
-        ViewStateManager.isProgressVisible = false
+        viewModel.isProgressVisible.postValue(false)
         if (success) {
             controller.shutdown()
         } else {

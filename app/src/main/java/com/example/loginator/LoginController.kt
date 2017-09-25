@@ -1,6 +1,8 @@
 package com.example.loginator
 
-interface LoginController {
+import android.arch.lifecycle.LifecycleOwner
+
+interface LoginController : LifecycleOwner {
     var emailError: Int?
     var passwordError: Int?
 

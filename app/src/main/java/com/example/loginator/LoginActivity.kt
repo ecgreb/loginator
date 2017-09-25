@@ -3,9 +3,9 @@ package com.example.loginator
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
+import android.arch.lifecycle.LifecycleActivity
 import android.os.Build
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
@@ -14,11 +14,14 @@ import kotlinx.android.synthetic.main.activity_login.login_progress
 import kotlinx.android.synthetic.main.login_form.email
 import kotlinx.android.synthetic.main.login_form.email_sign_in_button
 import kotlinx.android.synthetic.main.login_form.password
+import android.arch.lifecycle.ViewModelProviders
+
+
 
 /**
  * A login screen that offers login via email/password.
  */
-class LoginActivity : AppCompatActivity(), LoginController {
+class LoginActivity : LifecycleActivity(), LoginController {
     private lateinit var presenter: LoginPresenter
 
     override var emailError: Int? = null
@@ -40,7 +43,8 @@ class LoginActivity : AppCompatActivity(), LoginController {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        presenter = LoginPresenter(this)
+        presenter = LoginPresenter(this,
+                ViewModelProviders.of(this).get(LoginViewModel::class.java))
         initSoftKeyboard()
         initLoginForm()
     }
