@@ -25,6 +25,9 @@ import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
 
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.login_form.email
+import kotlinx.android.synthetic.main.login_form.email_sign_in_button
+import kotlinx.android.synthetic.main.login_form.password
 
 /**
  * A login screen that offers login via email/password.
