@@ -3,6 +3,11 @@ package com.example.loginator
 import android.text.TextUtils
 
 class LoginPresenter(private val controller: LoginController) : LoginCallback {
+
+    init {
+        Loginator.callback = this
+    }
+
     fun onLoginButtonClick(email: String, password: String) {
         controller.emailError = null
         controller.passwordError = null
@@ -23,7 +28,7 @@ class LoginPresenter(private val controller: LoginController) : LoginCallback {
         }
 
         controller.showProgress(true)
-        LoginThread(email, password, this).start()
+        Loginator.login(email, password)
     }
 
     private fun isEmailValid(email: String): Boolean {
