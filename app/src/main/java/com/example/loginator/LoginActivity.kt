@@ -80,7 +80,8 @@ class LoginActivity : AppCompatActivity(), LoginController {
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+            val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime)
+                    .toLong()
 
             login_form.visibility = if (show) View.GONE else View.VISIBLE
             login_form.animate()
