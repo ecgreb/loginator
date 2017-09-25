@@ -20,15 +20,19 @@ import kotlinx.android.synthetic.main.login_form.password
 /**
  * A login screen that offers login via email/password.
  */
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), LoginController {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private var mAuthTask: UserLoginTask? = null
 
+    lateinit var presenter: LoginPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        presenter = LoginPresenter(this)
+
         // Set up the login form.
         password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
